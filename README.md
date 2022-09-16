@@ -122,3 +122,9 @@ HINT: This means searching for each of the names that exist in your list with th
 able to be executed with a filename (you can assume the same format as you are working
 with) passed on the command line, and it should produce a listing of top 10 usernames
 and top 10 hosts. For example: details.sh sshlog-june22.log
+==
+!/usr/bin/bash
+
+sed -e  's/ \[preauth]/ /g' $*  | sed -e  's/sshd\[.*\]/sshd/g' | cut -c31- | fgrep 'invalid user' | awk '{print $4}' | sort | uniq -c | sort -nr | head -10
+
+sed -e  's/ \[preauth]/ /g' $*  | sed -e  's/sshd\[.*\]/sshd/g' | cut -c31- | fgrep 'Received' | sed -e  's/error: //g' | awk '{print $4}' | sort | uniq -c | sort -nr | head -10 
